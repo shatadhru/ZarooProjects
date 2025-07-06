@@ -22,6 +22,11 @@ const BookingRoutes = require("./routes/Booking/Booking");
 var corsOptions = {
   origin: [
     "http://localhost:5173",
+    "https://ai.zaroo.co",
+    "https://server.zaroo.co",
+    "https://zaroo.co",
+    "https://www.zaroo.co",
+   
   ]
 }
 
