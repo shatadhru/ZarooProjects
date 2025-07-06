@@ -1,7 +1,7 @@
 const axios = require("axios");
 require("dotenv").config();
 
-const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
+const UNSPLASH_ACCESS_KEY = "Q7jdTS1DuUXpaoi7kPw0h-tIb4JQKGaKVINWg9iWNb8" ;
 
 async function getPlaceImage(placeName) {
   try {
