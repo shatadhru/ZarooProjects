@@ -13,6 +13,8 @@ const path = require("path");
 const AuthenticationRoutes = require("./routes/Authentications Handaler/Authentications");
 const AiRoutes = require("./routes/AiRoutesHandaler/TourCreationRoutes");
 const BookingRoutes = require("./routes/Booking/Booking");
+const UserData = require("./routes/GetAllDataRoutes/UserDataRoutes");
+const PackagesDataHandaler = require("./routes/Packages Handaler/PackagesHandaler");
 
 // All Routes End
 
@@ -22,6 +24,10 @@ const BookingRoutes = require("./routes/Booking/Booking");
 var corsOptions = {
   origin: [
     "http://localhost:5173",
+    "http://localhost:5174",
+    "https://zaroo.co",
+    "https://ai.zaroo.co",
+    "https://admin.zaroo.co",
   ]
 }
 
@@ -48,7 +54,7 @@ const { Server } = require("socket.io");
 const { connections } = require("mongoose");
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: corsOptions,
   },
 });
 
@@ -86,6 +92,8 @@ io.on("connection", (socket) => {
 app.use("/auth", AuthenticationRoutes);
 app.use("/api", AiRoutes);
 app.use("/api", BookingRoutes);
+app.use("/api", UserData);
+app.use("/api", PackagesDataHandaler);
 
 module.exports = server ;
 

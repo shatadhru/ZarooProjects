@@ -13,10 +13,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  face_image: {
-    type: String,
-    required: false,
-  },
 });
 
 

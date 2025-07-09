@@ -8,39 +8,47 @@ const OtpVerification = require("../../models/OtpVerifications");
 
 
 router.post("/register", async (req, res) => {
-  const { useremail, username, password } = req.body;
+  const { firstName, email, password } = req.body;
 
-  if (!username || !password || !useremail) {
-    return res.status(400).json({ message: "All feilds are required" });
+  if (!firstName || !email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
   }
-  const hassedPassword = await bcrypt.hash(password, 10);
 
   try {
-    const newUser = new User({ username, useremail, password: hassedPassword });
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      username: firstName,
+      useremail: email,
+      password: hashedPassword,
+    });
+
     await newUser.save();
+
     res.status(200).send({ message: "User registered successfully" });
   } catch (error) {
-    res.status(400).send({ message: "Something Went Wrong" });
-    console.log(error);
+    console.error(error);
+    res.status(400).send({ message: "Something went wrong" });
   }
 });
 
+
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body; // changed to email
 
   try {
-    const user = await User.findOne({ username: username });
+    const user = await User.findOne({ useremail: email }); // find by email
     if (!user) {
-      return res.status(400).json({ message: "Invalid username or password" });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if(isPasswordValid){
-        res.status(200).send({message: "User logged in successfully"})
-    }else{
-        res.status(400).json({message: "Invalid username or password"})
+    if (isPasswordValid) {
+      res.status(200).send({ message: "User logged in successfully" });
+    } else {
+      res.status(400).json({ message: "Invalid email or password" });
     }
-
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error" });
